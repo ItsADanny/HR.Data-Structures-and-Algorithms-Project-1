@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "lwcyjszCDg4=",
+  "dgSpecHash": "78ucqirK2ls=",
   "success": true,
   "projectFilePath": "/Users/dannydesnoo/Documents/GitHub/HR.Data-Structures-and-Algorithms-Project-1/ToDoList/ToDoList.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/Users/dannydesnoo/.nuget/packages/spectre.console/0.54.0/spectre.console.0.54.0.nupkg.sha512"
+  ],
   "logs": []
 }

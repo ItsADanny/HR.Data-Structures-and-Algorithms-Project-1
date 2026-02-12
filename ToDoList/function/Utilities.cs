@@ -6,4 +6,7 @@ public static class Utilities
 
     public static string STRFromDT(DateTime datetime) =>
         datetime.ToString("yyyy-MM-dd HH:mm:ss,fff");
+
+    public static string DTToDisplaySTR(DateTime datetime) =>
+        datetime.ToString("yyyy-MM-dd HH:mm:ss");
 }
