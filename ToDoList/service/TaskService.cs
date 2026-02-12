@@ -11,13 +11,13 @@ public class TaskService : ITaskService
     {
         if (LastIndex < TasksList.Length - 1)
         {
-            LastIndex++;
             TasksList[LastIndex] = task;
+            LastIndex++;
             return; 
         } 
         addslots();
-        LastIndex++;
         TasksList[LastIndex] = task;
+        LastIndex++;
         return;
     }
     
