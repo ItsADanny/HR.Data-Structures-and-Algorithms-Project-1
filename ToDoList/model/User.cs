@@ -10,5 +10,5 @@ public class User
 
     public Role role {get; set; }
 
-    public Task task {get; set; }
+    public TaskItem task {get; set; }
 }
