@@ -16,5 +16,7 @@
         ];
 
         TaskView.PrintTasks(DEMO_USER, DEMO_DATA);
+
+        MenuView.PrintMenu();
     }
 }
