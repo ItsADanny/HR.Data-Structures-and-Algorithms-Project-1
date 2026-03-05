@@ -167,4 +167,9 @@ public class MyArray<T> : IMyCollection<T>
             yield return _items[i];
         }
     }
+
+    IMyIterator<T> IMyCollection<T>.GetIterator()
+    {
+        return new MyIterator<T>(_items);
+    }
 }

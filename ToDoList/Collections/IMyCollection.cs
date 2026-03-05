@@ -12,10 +12,10 @@ public interface IMyCollection<T>
     void Sort(Comparison<T> comparison); //Done
     void Clear();//Done
     R Reduce<R>(Func<R, T, R> accumulator, R initial); //Done
-    // IMyIterator<T> GetIterator();
+    IMyIterator<T> GetIterator();
     IEnumerable<T> GetEnumerator();
 }
-interface IMyIterator<T>
+public interface IMyIterator<T>
 {
     bool HasNext();
     T Next();
