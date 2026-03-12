@@ -160,15 +160,13 @@ public class MyArray<T> : IMyCollection<T>
         return result;
     }
 
-    public IEnumerable<T> GetEnumerator()
+
+    public IMyIterator<T> GetIterator()
     {
-        for (int i = 0; i < _count; i++)
-        {
-            yield return _items[i];
-        }
+        return new MyIterator<T>(_items);
     }
 
-    IMyIterator<T> IMyCollection<T>.GetIterator()
+    public IMyIterator<T> GetEnumerator()
     {
         return new MyIterator<T>(_items);
     }

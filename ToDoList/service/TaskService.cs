@@ -1,10 +1,16 @@
+
 public class TaskService : ITaskService
 {
     public TaskItem[] TasksList = new TaskItem[] {};
     int LastIndex = 0;
-    public IEnumerable<TaskItem> GetAllTasks()
+    public IMyCollection<TaskItem> GetAllTasks()
     {
-        return TasksList; 
+        MyArray<TaskItem> result = new MyArray<TaskItem>();
+        for (int i = 0; i < LastIndex; i++)
+        {
+            result.Add(TasksList[i]);
+        }
+        return result;
     }
 
     public void AddTask(TaskItem task)
