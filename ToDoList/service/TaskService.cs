@@ -1,81 +1,72 @@
 
 public class TaskService : ITaskService
 {
-    public TaskItem[] TasksList = new TaskItem[] {};
-    int LastIndex = 0;
+    private MyArray<TaskItem> TasksList = new MyArray<TaskItem>();
+
     public IMyCollection<TaskItem> GetAllTasks()
     {
-        MyArray<TaskItem> result = new MyArray<TaskItem>();
-        for (int i = 0; i < LastIndex; i++)
-        {
-            result.Add(TasksList[i]);
-        }
-        return result;
+        return TasksList;
     }
 
     public void AddTask(TaskItem task)
     {
-        if (LastIndex < TasksList.Length - 1)
-        {
-            TasksList[LastIndex] = task;
-            LastIndex++;
-            return; 
-        } 
-        addslots();
-        TasksList[LastIndex] = task;
-        LastIndex++;
-        return;
+        TasksList.Add(task);
     }
     
     public void UpdateTask(TaskItem task)
     {
-        int index = findTaskById(task.ID);
-        TasksList[index] = task; return;
+        TaskItem found = TasksList.FindBy(task.ID, (t, id) => t.ID == id);
+        if (found != null)
+        {
+            int index = TasksList.IndexOf(found);
+            TasksList[index] = task;
+        }
     }
 
-    public int findTaskById(int id)
-    {
-        for (int i = 0; i < TasksList.Length; i++)
-        {
-            if (TasksList[i].ID == id)
-            {
-                return i;
-            }
-        }
-        return -1;
-    }
     public void DeleteTask(int id)
     {
-        int index = findTaskById(id);
-        if(index != -1)
+        TaskItem found = TasksList.FindBy(id, (task, taskId) => task.ID == taskId);
+        if (found != null)
         {
-            shiftToleft(index);
-            LastIndex--;
+            TasksList.Remove(found);
         }
-        return;
-    }
-
-    public void shiftToleft( int index) 
-    { 
-        for (int x = index; x < LastIndex; x++) 
-        {
-            TasksList[x] = TasksList[x + 1];
-        }
-    }
-
-    public void addslots()
-    {
-        TaskItem[] newlist = new TaskItem[TasksList.Length + 10];
-        for (int i = 0; i < TasksList.Length; i++)
-        {
-            newlist[i] = TasksList[i];
-        }
-        TasksList = newlist;
     }
 
     public void ToggleTaskCompletion(int id)
     {
-        // Implementation here
-        return ;
+        TaskItem found = TasksList.FindBy(id, (task, taskId) => task.ID == taskId);
+        if (found != null)
+        {
+            int index = TasksList.IndexOf(found);
+            found.Status = found.Status == eTaskStatus.Complete ? eTaskStatus.ToDo : eTaskStatus.Complete;
+            TasksList[index] = found;
+        }
+    }
+
+    public IMyCollection<TaskItem> FilterByPriority(eTaskPriority priority)
+    {
+        return TasksList.Filter(task => task.Priority == priority);
+    }
+
+    public IMyCollection<TaskItem> FilterByDateRange(DateTime startDate, DateTime endDate)
+    {
+        return TasksList.Filter(task => task.CreateDateTime >= startDate && task.CreateDateTime <= endDate);
+    }
+
+    public IMyCollection<TaskItem> FilterByDate(DateTime date)
+    {
+        return TasksList.Filter(task => task.CreateDateTime.Date == date.Date);
+    }
+
+    public IMyCollection<TaskItem> FilterByStatus(eTaskStatus status)
+    {
+        return TasksList.Filter(task => task.Status == status);
+    }
+
+    public IMyCollection<TaskItem> FilterByPriorityAndDate(eTaskPriority priority, DateTime startDate, DateTime endDate)
+    {
+        return TasksList
+            .Filter(task => task.Priority == priority)
+            .Filter(task => task.CreateDateTime >= startDate && task.CreateDateTime <= endDate);
     }
 }
