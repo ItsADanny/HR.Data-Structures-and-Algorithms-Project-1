@@ -1,31 +1,47 @@
+using Spectre.Console;
+
 public class TaskItem : iDatabase
 {
     public int ID {get; set;}
     public string Title {get; set;}
     public string Description {get; set;}
-    public eTaskPriority Priority {get; set;}
-    public eTaskStatus Status {get; set;}
+    public TaskPriority Priority {get; set;}
+    public TaskStatus Status {get; set;}
+    public String Priority_String => Priority.ToString();
+    public String Status_String => Status.ToString(); 
+    public Style Priority_Color {
+        get { return Priority.Color; }
+    }
+
+    public Style Status_Color
+    {
+        get { return Status.Color; }
+    }
     public int? TeamID {get; set;}
     public int? UserID {get; set;}
     public DateTime CreateDateTime {get; set;}
     public DateTime UpdateDateTime {get; set;}
 
-    //Builders
-    public TaskItem(string title, string description, int priority, int? teamID, int? userID) =>
-        new TaskItem(0, title, description, TaskPriority.FromInt(priority), eTaskStatus.ToDo, teamID, userID, DateTime.Now, DateTime.Now);
-
-    public TaskItem(int id, string title, string description, int priority, int status, int? teamID, int? userID, string createDateTime, string updateDateTime)
+    //Constructors
+    public TaskItem(string title, string description, int priority, int? teamID, int? userID) 
+    : this(0, title, description, new TaskPriority(priority), new TaskStatus("ToDo"), teamID, userID, DateTime.Now, DateTime.Now)
     {
-        DateTime createDT = Utilities.DTFromSTR(createDateTime);
-        DateTime updateDT = Utilities.DTFromSTR(updateDateTime);
-
-        new TaskItem(id, title, description, TaskPriority.FromInt(priority), TaskStatus.FromInt(status), teamID, userID, createDT, updateDT);
+        
     }
 
-    public TaskItem(int id, string title, string description, int priority, int status, int? teamID, int? userID, DateTime createDateTime, DateTime updateDateTime) =>
-        new TaskItem(id, title, description, TaskPriority.FromInt(priority), TaskStatus.FromInt(status), teamID, userID, createDateTime, updateDateTime);
+    public TaskItem(int id, string title, string description, int priority, int status, int? teamID, int? userID, string createDateTime, string updateDateTime) 
+    : this(id, title, description, new TaskPriority(priority), new TaskStatus(status), teamID, userID, Utilities.DTFromSTR(createDateTime), Utilities.DTFromSTR(updateDateTime))
+    {
+        
+    }
 
-    public TaskItem(int id, string title, string description, eTaskPriority priority, eTaskStatus status, int? teamID, int? userID, DateTime createDateTime, DateTime updateDateTime)
+    public TaskItem(int id, string title, string description, int priority, int status, int? teamID, int? userID, DateTime createDateTime, DateTime updateDateTime) 
+    : this(id, title, description, new TaskPriority(priority), new TaskStatus(status), teamID, userID, createDateTime, updateDateTime)
+    {
+        
+    }
+
+    public TaskItem(int id, string title, string description, TaskPriority priority, TaskStatus status, int? teamID, int? userID, DateTime createDateTime, DateTime updateDateTime)
     {
         ID = id;
         Title = title;
@@ -52,4 +68,9 @@ public class TaskItem : iDatabase
 
     public static string GetByIDSQL() =>
         $"";
+
+    public override string ToString()
+    {
+        return $"Taskitem: {Title}";
+    }
 }

@@ -20,13 +20,14 @@ public static class TaskView
 
         foreach (TaskItem task in taskItems)
         {
-            Console.WriteLine(task);
+            //DEBUG
+            // Console.WriteLine(task.ToString());
 
             table.AddRow(
                 new Text($"{task.Title}"),
                 new Text($"{task.Description}"),
-                new Text($"{task.Priority}"),
-                new Text($"{task.Status}"),
+                new Text($"{task.Priority_String}", task.Priority_Color),
+                new Text($"{task.Status_String}", task.Status_Color),
                 new Text($"{Utilities.DTToDisplaySTR(task.CreateDateTime)}"),
                 new Text($"{Utilities.DTToDisplaySTR(task.UpdateDateTime)}")
             );
@@ -59,10 +60,10 @@ public static class TaskView
         Table table = new Table().Expand();
 
         //Add columns to the table
-        table.AddColumn(new TableColumn("TH_ToDo").Header("To Do"));
-        table.AddColumn(new TableColumn("TH_Doing").Header("Doing"));
-        table.AddColumn(new TableColumn("TH_Review").Header("Review"));
-        table.AddColumn(new TableColumn("TH_Complete").Header("Complete"));
+        table.AddColumn(new TableColumn("TH_ToDo").Header(new Text("To Do", TaskStatus.ToDoColor)));
+        table.AddColumn(new TableColumn("TH_Doing").Header(new Text("Doing", TaskStatus.DoingColor)));
+        table.AddColumn(new TableColumn("TH_Review").Header(new Text("Review", TaskStatus.ReviewColor)));
+        table.AddColumn(new TableColumn("TH_Complete").Header(new Text("Complete", TaskStatus.CompleteColor)));
 
         TaskItem[] BacklogItems = [];
         TaskItem[] DoingItems = [];
@@ -81,7 +82,6 @@ public static class TaskView
         {
             panel.Header("all tasks", Justify.Center);
         }
-        
 
         //Print the new UI
         AnsiConsole.Write(panel);

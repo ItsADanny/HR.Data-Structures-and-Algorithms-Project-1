@@ -32,20 +32,21 @@ public class TaskService : ITaskService
         }
     }
 
-    public void ToggleTaskCompletion(int id)
-    {
-        TaskItem found = TasksList.FindBy(id, (task, taskId) => task.ID == taskId);
-        if (found != null)
-        {
-            int index = TasksList.IndexOf(found);
-            found.Status = found.Status == eTaskStatus.Complete ? eTaskStatus.ToDo : eTaskStatus.Complete;
-            TasksList[index] = found;
-        }
-    }
+    //NOT NEEDED, WE HAVE A DIFFERENT METHOD NOW FOR THIS
+    // public void ToggleTaskCompletion(int id)
+    // {
+    //     TaskItem found = TasksList.FindBy(id, (task, taskId) => task.ID == taskId);
+    //     if (found != null)
+    //     {
+    //         int index = TasksList.IndexOf(found);
+    //         found.Status = found.Status.eTaskStatus == eTaskStatus.Complete ? eTaskStatus.ToDo : eTaskStatus.Complete;
+    //         TasksList[index] = found;
+    //     }
+    // }
 
     public IMyCollection<TaskItem> FilterByPriority(eTaskPriority priority)
     {
-        return TasksList.Filter(task => task.Priority == priority);
+        return TasksList.Filter(task => task.Priority.eTaskPriority == priority);
     }
 
     public IMyCollection<TaskItem> FilterByDateRange(DateTime startDate, DateTime endDate)
@@ -60,13 +61,13 @@ public class TaskService : ITaskService
 
     public IMyCollection<TaskItem> FilterByStatus(eTaskStatus status)
     {
-        return TasksList.Filter(task => task.Status == status);
+        return TasksList.Filter(task => task.Status.eTaskStatus == status);
     }
 
     public IMyCollection<TaskItem> FilterByPriorityAndDate(eTaskPriority priority, DateTime startDate, DateTime endDate)
     {
         return TasksList
-            .Filter(task => task.Priority == priority)
+            .Filter(task => task.Priority.eTaskPriority == priority)
             .Filter(task => task.CreateDateTime >= startDate && task.CreateDateTime <= endDate);
     }
 }
