@@ -112,22 +112,91 @@ public class MyLinkedList<T> : IMyCollection<T>
 
     public int IndexOf(T item)
     {
-        throw new NotImplementedException();
+        Node current = _head;
+        int index = 0;
+        while (current != null)
+        {
+            if (current.Value.Equals(item))
+                return index;
+
+            current = current.Next;
+            index++;
+        }
+        return -1;
     }
 
     public void Sort(Comparison<T> comparison)
     {
-        throw new NotImplementedException();
+        _head = MergeSort(_head, comparison);
+    }
+
+    private Node MergeSort(Node head, Comparison<T> comparison)
+    {
+        if (head == null || head.Next == null)
+            return head;
+
+        Node middle = GetMiddle(head);
+        Node nextOfMiddle = middle.Next;
+        middle.Next = null;
+
+        Node left = MergeSort(head, comparison);
+        Node right = MergeSort(nextOfMiddle, comparison);
+
+        return Merge(left, right, comparison);
+    }
+
+    private Node GetMiddle(Node head)
+    {
+        if (head == null) return head;
+
+        Node slow = head, fast = head.Next;
+        while (fast != null)
+        {
+            fast = fast.Next;
+            if (fast != null)
+            {
+                slow = slow.Next;
+                fast = fast.Next;
+            }
+        }
+        return slow;
+    }
+
+    private Node Merge(Node left, Node right, Comparison<T> comparison)
+    {
+        if (left == null) return right;
+        if (right == null) return left;
+
+        Node result;
+        if (comparison(left.Value, right.Value) <= 0)
+        {
+            result = left;
+            result.Next = Merge(left.Next, right, comparison);
+        }
+        else
+        {
+            result = right;
+            result.Next = Merge(left, right.Next, comparison);
+        }
+        return result;
     }
 
     public void Clear()
     {
-        throw new NotImplementedException();
+        _head = null;
+        _count = 0;
     }
 
     public R Reduce<R>(Func<R, T, R> accumulator, R initial)
     {
-        throw new NotImplementedException();
+        R result = initial;
+        Node current = _head;
+        for (int i = 0; i < _count; i++)
+        {
+            result = accumulator(result, current.Value);
+            current = current.Next;
+        }
+        return result;
     }
 
     public IMyIterator<T> GetIterator()
@@ -137,6 +206,11 @@ public class MyLinkedList<T> : IMyCollection<T>
 
     public IEnumerable<T> GetEnumerator()
     {
-        throw new NotImplementedException();
+        Node current = _head;
+        while (current != null)
+        {
+            yield return current.Value;
+            current = current.Next;
+        }
     }
 }
