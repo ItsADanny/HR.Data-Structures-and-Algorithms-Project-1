@@ -1,34 +1,29 @@
 public class MyLinkedList<T> : IMyCollection<T>
 {
-    private Node _head;
+    private SingleNode<T> _head;
     private int _count;
 
     public int Count => _count;
 
     public bool Dirty { get; set; }
 
-    private class Node
+    public void AddFirst(T item)
     {
-        public T Value;
-        public Node Next;
-
-        public Node(T value)
-        {
-            Value = value;
-            Next = null;
-        }
+        SingleNode<T> newNode = new SingleNode<T>(item, _head);
+        _head = newNode;
+        _count++;
     }
 
     public void Add(T item)
     {
-        Node newNode = new Node(item);
+        SingleNode<T> newNode = new SingleNode<T>(item);
         if (_head == null)
         {
             _head = newNode;
         }
         else
         {
-            Node current = _head;
+            SingleNode<T> current = _head;
             while (current.Next != null)
             {
                 current = current.Next;
@@ -49,7 +44,7 @@ public class MyLinkedList<T> : IMyCollection<T>
             return;
         }
 
-        Node current = _head;
+        SingleNode<T> current = _head;
         while (current.Next != null)
         {
             if (current.Next.Value.Equals(item))
@@ -74,7 +69,7 @@ public class MyLinkedList<T> : IMyCollection<T>
             return;
         }
 
-        Node current = _head;
+        SingleNode<T> current = _head;
         for (int i = 0; i < index - 1; i++)
         {
             current = current.Next;
@@ -85,7 +80,7 @@ public class MyLinkedList<T> : IMyCollection<T>
 
     public T FindBy<K>(K key, Func<T, K, bool> predicate)
     {
-        Node current = _head;
+        SingleNode<T> current = _head;
         while (current != null)
         {
             if (predicate(current.Value, key))
@@ -99,7 +94,7 @@ public class MyLinkedList<T> : IMyCollection<T>
     public IMyCollection<T> Filter(Func<T, bool> predicate)
     {
         MyLinkedList<T> result = new MyLinkedList<T>();
-        Node current = _head;
+        SingleNode<T> current = _head;
         while (current != null)
         {
             if (predicate(current.Value))
@@ -112,7 +107,7 @@ public class MyLinkedList<T> : IMyCollection<T>
 
     public int IndexOf(T item)
     {
-        Node current = _head;
+        SingleNode<T> current = _head;
         int index = 0;
         while (current != null)
         {
@@ -130,26 +125,26 @@ public class MyLinkedList<T> : IMyCollection<T>
         _head = MergeSort(_head, comparison);
     }
 
-    private Node MergeSort(Node head, Comparison<T> comparison)
+    private SingleNode<T> MergeSort(SingleNode<T> head, Comparison<T> comparison)
     {
         if (head == null || head.Next == null)
             return head;
 
-        Node middle = GetMiddle(head);
-        Node nextOfMiddle = middle.Next;
+        SingleNode<T> middle = GetMiddle(head);
+        SingleNode<T> nextOfMiddle = middle.Next;
         middle.Next = null;
 
-        Node left = MergeSort(head, comparison);
-        Node right = MergeSort(nextOfMiddle, comparison);
+        SingleNode<T> left = MergeSort(head, comparison);
+        SingleNode<T> right = MergeSort(nextOfMiddle, comparison);
 
         return Merge(left, right, comparison);
     }
 
-    private Node GetMiddle(Node head)
+    private SingleNode<T> GetMiddle(SingleNode<T> head)
     {
         if (head == null) return head;
 
-        Node slow = head, fast = head.Next;
+        SingleNode<T> slow = head, fast = head.Next;
         while (fast != null)
         {
             fast = fast.Next;
@@ -162,12 +157,12 @@ public class MyLinkedList<T> : IMyCollection<T>
         return slow;
     }
 
-    private Node Merge(Node left, Node right, Comparison<T> comparison)
+    private SingleNode<T> Merge(SingleNode<T> left, SingleNode<T> right, Comparison<T> comparison)
     {
         if (left == null) return right;
         if (right == null) return left;
 
-        Node result;
+        SingleNode<T> result;
         if (comparison(left.Value, right.Value) <= 0)
         {
             result = left;
@@ -190,7 +185,7 @@ public class MyLinkedList<T> : IMyCollection<T>
     public R Reduce<R>(Func<R, T, R> accumulator, R initial)
     {
         R result = initial;
-        Node current = _head;
+        SingleNode<T> current = _head;
         for (int i = 0; i < _count; i++)
         {
             result = accumulator(result, current.Value);
@@ -201,12 +196,12 @@ public class MyLinkedList<T> : IMyCollection<T>
 
     public IMyIterator<T> GetIterator()
     {
-        throw new NotImplementedException();
+        return new MyLinkedListIterator<T>(_head);
     }
 
     public IEnumerable<T> GetEnumerator()
     {
-        Node current = _head;
+        SingleNode<T> current = _head;
         while (current != null)
         {
             yield return current.Value;
