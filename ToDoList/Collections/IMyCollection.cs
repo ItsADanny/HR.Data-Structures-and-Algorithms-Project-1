@@ -13,7 +13,7 @@ public interface IMyCollection<T>
     void Clear();//Done
     R Reduce<R>(Func<R, T, R> accumulator, R initial); //Done
     IMyIterator<T> GetIterator();
-    IEnumerable<T> GetEnumerator();
+    IEnumerator<T> GetEnumerator();
 }
 public interface IMyIterator<T>
 {

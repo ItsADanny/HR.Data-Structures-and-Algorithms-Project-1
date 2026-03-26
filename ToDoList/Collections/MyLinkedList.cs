@@ -199,7 +199,7 @@ public class MyLinkedList<T> : IMyCollection<T>
         return new MyLinkedListIterator<T>(_head);
     }
 
-    public IEnumerable<T> GetEnumerator()
+    public IEnumerator<T> GetEnumerator()
     {
         SingleNode<T> current = _head;
         while (current != null)

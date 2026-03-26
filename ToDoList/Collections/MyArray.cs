@@ -165,7 +165,7 @@ public class MyArray<T> : IMyCollection<T>
         return new MyIterator<T>(_items);
     }
 
-    public IEnumerable<T> GetEnumerator()
+    public IEnumerator<T> GetEnumerator()
     {
         for (int i = 0; i < _count; i++)
         {
