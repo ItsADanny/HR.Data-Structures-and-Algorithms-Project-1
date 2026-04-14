@@ -18,7 +18,7 @@ public class MenuView()
                 TaskView.DisplayCurrentlyDoing();
                 break;
             case "View kanban":
-                // TaskView.DisplayKanBan();
+                // TaskView.PrintTasksKanBan();
                 break;
             case "View specific boards":
                 TaskView.SelectBoard();
@@ -50,6 +50,35 @@ public class MenuView()
         panel.Header($"HR.DATA STRUCTURES AND ALGORITHMS - Project One", Justify.Center);
 
         return panel;
+    }
+
+    public static User? Login(int attempts = 0)
+    {
+        AnsiConsole.Clear();
+
+        AnsiConsole.Write(Align.Center(Logo()));
+
+        string username = AnsiConsole.Ask<string>("Please enter your username:");
+        string password = AnsiConsole.Prompt(
+            new TextPrompt<string>("Please enter your password:")
+                .PromptStyle("red")
+                .Secret());
+
+        // if (UserController.Login(username, password))
+        if (username == "admin" && password == "password")
+        {
+            return new User { FirstName = username };
+        } else {
+            if (attempts < 2)
+            {
+                AnsiConsole.MarkupLine("[red]Invalid username or password. Please try again.[/]");
+                Thread.Sleep(2500);
+                return null;
+            }
+            AnsiConsole.MarkupLine("[red]Too many failed login attempts. Exiting program.[/]");
+            Thread.Sleep(2500);
+            return null;
+        }
     }
 
     public static void GoodByeMessage()

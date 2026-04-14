@@ -307,28 +307,32 @@ public static class TaskView
         AnsiConsole.Write(panel);
     }
 
-    private static void PrintTasksDateSplit(User? currUser, TaskItem[] taskItems)
+    private static void PrintTasksDateSplit(User? currUser, MyArray<TaskItem> taskItems)
     {
         //Clear the console
         AnsiConsole.Clear();
 
-        TaskItem[][] TaskItems = [[], [] ,[]];
+        MyArray<TaskItem>[] TaskItems = [
+            (MyArray<TaskItem>)taskItems.Filter(t => t.Status.eTaskStatus == eTaskStatus.Complete), 
+            (MyArray<TaskItem>)taskItems.Filter(t => t.Status.eTaskStatus == eTaskStatus.Doing),
+            (MyArray<TaskItem>)taskItems.Filter(t => t.Status.eTaskStatus == eTaskStatus.ToDo)
+        ];
         Table?[] TablesToView = [null, null, null];
         Panel?[] PanelsToView = [null, null, null];
         string[] Headers = ["Title", "Description", "Priority", "Status", "Created", "Updated"];
 
-        if (TaskItems[0].Count() > 0) TablesToView[0] = _mBasicTablePrefab(Headers);
-        if (TaskItems[1].Count() > 0) TablesToView[1] = _mBasicTablePrefab(Headers);
-        if (TaskItems[2].Count() > 0) TablesToView[2] = _mBasicTablePrefab(Headers);
+        if (TaskItems[0].Count > 0) TablesToView[0] = _mBasicTablePrefab(Headers);
+        if (TaskItems[1].Count > 0) TablesToView[1] = _mBasicTablePrefab(Headers);
+        if (TaskItems[2].Count > 0) TablesToView[2] = _mBasicTablePrefab(Headers);
 
         int currPos = 0;
 
-        foreach (TaskItem[] tasks in TaskItems)
+        foreach (MyArray<TaskItem> tasks in TaskItems)
         {
-            if (tasks.Count() > 0 && TablesToView[currPos] is not null)
+            if (tasks.Count > 0 && TablesToView[currPos] is not null)
             {
                 //Put the tickets into the correct table
-                foreach (TaskItem task in taskItems)
+                foreach (TaskItem task in tasks)
                 {
                     //Create a new row, and add in the correct values to the right spot
                     TablesToView[currPos].AddRow(
@@ -395,7 +399,7 @@ public static class TaskView
         }   
     }
 
-    private static void PrintTasksKanBan(User? currUser, TaskItem[] taskItems)
+    public static void PrintTasksKanBan(User? currUser, MyArray<TaskItem> taskItems)
     {
         //Clear the console
         AnsiConsole.Clear();
@@ -409,10 +413,22 @@ public static class TaskView
         table.AddColumn(new TableColumn("TH_Review").Header(new Text("Review", TaskStatus.ReviewColor)));
         table.AddColumn(new TableColumn("TH_Complete").Header(new Text("Complete", TaskStatus.CompleteColor)));
 
-        TaskItem[] BacklogItems = [];
-        TaskItem[] DoingItems = [];
-        TaskItem[] ReviewItems = [];
-        TaskItem[] CompleteItems = [];
+        MyArray<TaskItem> BacklogItems = (MyArray<TaskItem>)taskItems.Filter(t => t.Status == new TaskStatus("ToDo"));
+        MyArray<TaskItem> DoingItems = (MyArray<TaskItem>)taskItems.Filter(t => t.Status == new TaskStatus("Doing"));
+        MyArray<TaskItem> ReviewItems = (MyArray<TaskItem>)taskItems.Filter(t => t.Status == new TaskStatus("Review"));
+        MyArray<TaskItem> CompleteItems = (MyArray<TaskItem>)taskItems.Filter(t => t.Status == new TaskStatus("Complete"));
+
+        int maxItems = new int[] { BacklogItems.Count, DoingItems.Count, ReviewItems.Count, CompleteItems.Count }.Max();
+
+        for (int i = 0; i < maxItems; i++)
+        {
+            table.AddRow(
+                i < BacklogItems.Count ? new Text($"{BacklogItems[i].Title}\n{BacklogItems[i].Description}", BacklogItems[i].Priority_Color) : new Text(""),
+                i < DoingItems.Count ? new Text($"{DoingItems[i].Title}\n{DoingItems[i].Description}", DoingItems[i].Priority_Color) : new Text(""),
+                i < ReviewItems.Count ? new Text($"{ReviewItems[i].Title}\n{ReviewItems[i].Description}", ReviewItems[i].Priority_Color) : new Text(""),
+                i < CompleteItems.Count ? new Text($"{CompleteItems[i].Title}\n{CompleteItems[i].Description}", CompleteItems[i].Priority_Color) : new Text("")
+            );
+        }
 
         //Create a new panel in which we will add our table
         Panel panel = new Panel(table);
@@ -420,7 +436,7 @@ public static class TaskView
         //Set the Header
         if (currUser is not null)
         {
-            panel.Header($"{currUser.FirstName} {currUser.LastName} - Current tasks", Justify.Center);
+            panel.Header($"{currUser.FirstName} {currUser.LastName} - Tickets", Justify.Center);
         }
         else
         {

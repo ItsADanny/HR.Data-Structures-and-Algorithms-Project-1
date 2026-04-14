@@ -8,10 +8,16 @@
 
     public static void Main()
     {
-        // TaskView.PrintTasksDateSplit(DEMO_USER, DEMO_DATA);
-        // TaskView.PrintTasksKanBan(DEMO_USER, DEMO_DATA);
-
         bool ExitProgram = false;
+        int attempts = 0;
+        User? appUser = null;
+        
+        while (attempts < 3 && appUser == null)
+        {
+            appUser = MenuView.Login(attempts);
+            attempts++;
+        }
+        if (attempts == 3 && appUser == null) ExitProgram = true;
 
         while (!ExitProgram)
         {

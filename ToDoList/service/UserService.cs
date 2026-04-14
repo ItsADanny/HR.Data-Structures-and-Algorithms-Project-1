@@ -1,0 +1,57 @@
+public class UserService : IUserService
+{
+    private MyArray<User> UserList = new MyArray<User>();
+
+    public bool AddUser(User user)
+    {
+        if (UserList.FindBy(user.Username, (u, username) => u.Username == username) == null)
+        {
+            UserList.Add(user);
+            return true;
+        }
+        return false;
+    }
+
+    public bool DeleteUser(int id)
+    {
+        var user = GetUserByID(id);
+        if (user != null)
+        {
+            UserList.Remove(user);
+            return true;
+        }
+        return false;
+    }
+
+    public IMyCollection<User> GetAllUsers() => UserList;
+
+    public User GetUserByID(int id)
+    {
+        return UserList.FindBy(id, (u, userID) => u.ID == userID);
+    }
+
+    public User GetUserByUsername(string username)
+    {
+        return UserList.FindBy(username, (u, usernameParam) => u.Username == usernameParam);
+    }
+
+    public IMyCollection<User> GetUsersByFirstname(string firstname)
+    {
+        return UserList.Filter((u) => u.FirstName == firstname);
+    }
+
+    public IMyCollection<User> GetUsersByLastname(string lastname)
+    {
+        return UserList.Filter((u) => u.LastName == lastname);
+    }
+
+    public IMyCollection<User> GetUsersByTeamID(int teamID)
+    {
+        return UserList.Filter((u) => u.TeamID == teamID);
+    }
+
+    public bool UpdateUser(User user)
+    {
+        throw new NotImplementedException();
+    }
+}
