@@ -3,20 +3,20 @@ public class MyLinkedList<T> : IMyCollection<T>
     private SingleNode<T> _head;
     private int _count;
 
-    public int Count => _count;
+    public int Count{get => GetCountFrom(_head);}
 
     public bool Dirty { get; set; }
 
-    public void AddFirst(T item)
+    public void AddFirst(T value)
     {
-        SingleNode<T> newNode = new SingleNode<T>(item, _head);
+        SingleNode<T> newNode = new SingleNode<T>(value, _head);
         _head = newNode;
         _count++;
     }
 
-    public void Add(T item)
+    public void Add(T value)
     {
-        SingleNode<T> newNode = new SingleNode<T>(item);
+        SingleNode<T> newNode = new SingleNode<T>(value);
         if (_head == null)
         {
             _head = newNode;
@@ -33,11 +33,11 @@ public class MyLinkedList<T> : IMyCollection<T>
         _count++;
     }
 
-    public void Remove(T item)
+    public void Remove(T value)
     {
         if (_head == null) return;
 
-        if (_head.Value.Equals(item))
+        if (_head.Value.Equals(value))
         {
             _head = _head.Next;
             _count--;
@@ -47,7 +47,7 @@ public class MyLinkedList<T> : IMyCollection<T>
         SingleNode<T> current = _head;
         while (current.Next != null)
         {
-            if (current.Next.Value.Equals(item))
+            if (current.Next.Value.Equals(value))
             {
                 current.Next = current.Next.Next;
                 _count--;
@@ -89,6 +89,16 @@ public class MyLinkedList<T> : IMyCollection<T>
             current = current.Next;
         }
         return default(T);
+    }
+
+    public SingleNode<T> GetLast()
+    {
+        SingleNode<T> current = _head;
+        while (current != null && current.Next != null)
+        {
+            current = current.Next;
+        }
+        return current;
     }
 
     public IMyCollection<T> Filter(Func<T, bool> predicate)
@@ -207,5 +217,29 @@ public class MyLinkedList<T> : IMyCollection<T>
             yield return current.Value;
             current = current.Next;
         }
+    }
+
+    public int GetCountFrom(SingleNode<T> start, int acc = 0)
+    {
+        return start == null ? acc : GetCountFrom(start.Next, acc + 1);
+    }
+
+    public int GetCountFrom(SingleNode<T> start)
+    {
+        if(start == null) return 0;
+        return 1+ GetCountFrom(start.Next);
+    }
+
+    public int GetCountFrom_(SingleNode<T> start)
+    {
+        if (start == null) return 0;
+        int count = 0;
+
+        while (start != null)
+        {
+            count++;
+            start = start.Next;
+        }
+        return count;
     }
 }
