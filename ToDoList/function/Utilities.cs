@@ -9,4 +9,34 @@ public static class Utilities
 
     public static string DTToDisplaySTR(DateTime datetime) =>
         datetime.ToString("yyyy-MM-dd HH:mm:ss");
+
+    public static IMyCollection<T> ConvertToMyCollection<T>(T[] array, eIMycollectionType collectionType) where T : iDatabase
+    {
+
+        IMyCollection<T> collection;
+        switch (collectionType)
+        {
+            case eIMycollectionType.LinkedList:
+                collection = new MyLinkedList<T>();
+                break;
+            case eIMycollectionType.Array:
+                collection = new MyArray<T>();
+                break;
+            case eIMycollectionType.Hashmap:
+                collection = new MyHashmap<T>();
+                break;
+            // case eIMycollectionType.BinarySearchTree:
+            //     collection = new MyLinkedList<T>();
+            //     break;
+            default:
+                throw new ArgumentException("Invalid collection type");
+        }
+
+        foreach (T item in array)
+        {
+            collection.Add(item);
+        }
+        return collection;
+    }
+
 }

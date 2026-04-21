@@ -73,4 +73,8 @@ public class TaskItem : iDatabase
     {
         return $"Taskitem: {Title}";
     }
+    public override int GetHashCode()
+    {
+        return ID.GetHashCode(); 
+    }
 }

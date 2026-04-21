@@ -1,9 +1,9 @@
 using System.ComponentModel;
 using System.Dynamic;
 
-public class MyHashmap<TKey, TValue>: IMyCollection<KeyValuePair<TKey, TValue>>
+public class MyHashmap<T>: IMyCollection<T>
 {
-    private readonly MyLinkedList<KeyValuePair<TKey, TValue>>[] _buckets;
+    private MyLinkedList<T>[] _buckets;
 
     public int Count {get; private set;}
 
@@ -12,19 +12,19 @@ public class MyHashmap<TKey, TValue>: IMyCollection<KeyValuePair<TKey, TValue>>
     public MyHashmap(int capacity = 10)
     {
         Count = capacity;
-        _buckets = new MyLinkedList<KeyValuePair<TKey, TValue>>[capacity];
+        _buckets = new MyLinkedList<T>[capacity];
     }
 
-    public int GetIndex(TKey key)
+    public int GetIndex(T key)
     {
-        return Math.Abs(key.GetHashCode() % Count);
+        return Math.Abs(key.GetHashCode()) % _buckets.Length;
     }
 
-    public void Add(KeyValuePair<TKey, TValue> item)
+    public void Add(T item)
     {
-        int index = GetIndex(item.Key);
+        int index = GetIndex(item);
 
-        _buckets[index] ??= new MyLinkedList<KeyValuePair<TKey, TValue>>();
+        _buckets[index] ??= new MyLinkedList<T>();
 
         if(Check()){
             Rehash();
@@ -32,9 +32,9 @@ public class MyHashmap<TKey, TValue>: IMyCollection<KeyValuePair<TKey, TValue>>
         
         foreach (var kvp in _buckets[index])
         {
-            if (kvp.Key.Equals(item.Key))
+            if (kvp.Equals(item))
             {
-                throw new ArgumentException($"Key '{item.Key}' already exists in the hashmap.");
+                throw new ArgumentException($"Key '{item}' already exists in the hashmap.");
             }
         }
         _buckets[index].Add(item);
@@ -42,9 +42,9 @@ public class MyHashmap<TKey, TValue>: IMyCollection<KeyValuePair<TKey, TValue>>
     public bool Check()
     {
         int IsUsed = 0;
-        for(int i = 0; i <= _buckets.Length; i++)
+        for(int i = 0; i < _buckets.Length; i++)
         {
-            if(_buckets[i].Count != 0)
+            if(_buckets[i] != null && _buckets[i].Count != 0)
             {
                 IsUsed++;
             }
@@ -59,9 +59,9 @@ public class MyHashmap<TKey, TValue>: IMyCollection<KeyValuePair<TKey, TValue>>
 
     public void Rehash()
     {
-        MyLinkedList<KeyValuePair<TKey, TValue>>[] oldBuckets = _buckets;
+        MyLinkedList<T>[] oldBuckets = _buckets;
         int newCapacity = Count * 2;
-        MyLinkedList<KeyValuePair<TKey, TValue>>[] newBuckets = new MyLinkedList<KeyValuePair<TKey, TValue>>[newCapacity];
+        MyLinkedList<T>[] newBuckets = new MyLinkedList<T>[newCapacity];
 
         foreach (var bucket in oldBuckets)
         {
@@ -69,48 +69,49 @@ public class MyHashmap<TKey, TValue>: IMyCollection<KeyValuePair<TKey, TValue>>
             {
                 foreach (var kvp in bucket)
                 {
-                    int newIndex = GetIndex(kvp.Key);
-                    newBuckets[newIndex] ??= new MyLinkedList<KeyValuePair<TKey, TValue>>();
+                    int newIndex = GetIndex(kvp);
+                    newBuckets[newIndex] ??= new MyLinkedList<T>();
                     newBuckets[newIndex].Add(kvp);  
                 }
             }
         }
 
-        Array.Copy(newBuckets, _buckets, newCapacity);
+        _buckets = newBuckets;
+        Count = newCapacity;
     }
 
-    public void Remove(KeyValuePair<TKey, TValue> item)
+    public void Remove(T item)
     {
-        int index = GetIndex(item.Key);
+        int index = GetIndex(item);
         if (_buckets[index] == null)
         {
-            throw new KeyNotFoundException($"Key '{item.Key}' not found in the hashmap.");
+            throw new KeyNotFoundException($"Key '{item}' not found in the hashmap.");
         }
          _buckets[index].Remove(item);
     }
 
-    public void Update(KeyValuePair<TKey, TValue> item)
+    public void Update(T item)
     {
-        int index = GetIndex(item.Key);
+        int index = GetIndex(item);
         if (_buckets[index] == null)
         {
-            throw new KeyNotFoundException($"Key '{item.Key}' not found in the hashmap.");
+            throw new KeyNotFoundException($"Key '{item}' not found in the hashmap.");
         }
-        var current = _buckets[index].FindBy(item.Key, (kvp, key) => kvp.Key.Equals(key));
-        if (current.Key.Equals(item.Key))
+        var current = _buckets[index].FindBy(item, (kvp, key) => kvp.Equals(key));
+        if (current.Equals(item))
         {
             _buckets[index].Remove(current);
             _buckets[index].Add(item);
         }
         else
         {
-            throw new KeyNotFoundException($"Key '{item.Key}' not found in the hashmap.");
+            throw new KeyNotFoundException($"Key '{item}' not found in the hashmap.");
         }
     }
 
-    public KeyValuePair<TKey, TValue> FindBy<K>(K key, Func<KeyValuePair<TKey, TValue>, K, bool> predicate)
+    public T FindBy<K>(K key, Func<T, K, bool> predicate)
     {
-        int index = GetIndex((TKey)(object)key);
+        int index = GetIndex((T)(object)key);
         if (_buckets[index] == null)
         {
             throw new KeyNotFoundException($"Key '{key}' not found in the hashmap.");
@@ -126,9 +127,9 @@ public class MyHashmap<TKey, TValue>: IMyCollection<KeyValuePair<TKey, TValue>>
     }
 
 
-    public IMyCollection<KeyValuePair<TKey, TValue>> Filter(Func<KeyValuePair<TKey, TValue>, bool> predicate)
+    public IMyCollection<T> Filter(Func<T, bool> predicate)
     {
-        MyHashmap<TKey, TValue> result = new MyHashmap<TKey, TValue>(Count);
+        MyHashmap<T> result = new MyHashmap<T>(Count);
         foreach (var bucket in _buckets)
         {
             if (bucket != null)
@@ -145,7 +146,7 @@ public class MyHashmap<TKey, TValue>: IMyCollection<KeyValuePair<TKey, TValue>>
         return result;
     }
 
-    public void Sort(Comparison<KeyValuePair<TKey, TValue>> comparison)
+    public void Sort(Comparison<T> comparison)
     {
         throw new NotImplementedException();
     }
@@ -158,17 +159,17 @@ public class MyHashmap<TKey, TValue>: IMyCollection<KeyValuePair<TKey, TValue>>
         }
     }
 
-    public R Reduce<R>(Func<R, KeyValuePair<TKey, TValue>, R> accumulator, R initial)
+    public R Reduce<R>(Func<R, T, R> accumulator, R initial)
     {
         throw new NotImplementedException();
     }
 
-    public IMyIterator<KeyValuePair<TKey, TValue>> GetIterator()
+    public IMyIterator<T> GetIterator()
     {
         throw new NotImplementedException();
     }
 
-    public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
+    public IEnumerator<T> GetEnumerator()
     {
         throw new NotImplementedException();
     }
