@@ -39,4 +39,14 @@ public static class Utilities
         return collection;
     }
 
+    public static T[] ToArray<T>(IMyCollection<T> values)
+    {
+        T[] array = new T[values.Count];
+        int index = 0;
+        foreach (T value in values)
+        {
+            array[index++] = value;
+        }
+        return array;
+    }
 }
