@@ -97,8 +97,9 @@ public class MyHashmap<T>: IMyCollection<T>
         {
             throw new KeyNotFoundException($"Key '{item}' not found in the hashmap.");
         }
-        var current = _buckets[index].FindBy(item, (kvp, key) => kvp.Equals(key));
-        if (current.Equals(item))
+
+        T current = FindBy(t => t.Equals(item) ? 0 : -1);
+        if (current != null)
         {
             _buckets[index].Remove(current);
             _buckets[index].Add(item);
@@ -109,21 +110,22 @@ public class MyHashmap<T>: IMyCollection<T>
         }
     }
 
-    public T FindBy<K>(K key, Func<T, K, bool> predicate)
+    public T FindBy(Func<T, int> predicate)
     {
-        int index = GetIndex((T)(object)key);
-        if (_buckets[index] == null)
+        foreach (var bucket in _buckets)
         {
-            throw new KeyNotFoundException($"Key '{key}' not found in the hashmap.");
-        }
-        foreach (var kvp in _buckets[index])
-        {
-            if (predicate(kvp, key))
+            if (bucket != null)
             {
-                return kvp;
+                foreach (var kvp in bucket)
+                {
+                    if (predicate(kvp) == 0)
+                    {
+                        return kvp;
+                    }
+                }
             }
         }
-        throw new KeyNotFoundException($"Key '{key}' not found in the hashmap.");
+        return default(T);
     }
 
 

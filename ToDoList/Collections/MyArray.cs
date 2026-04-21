@@ -75,7 +75,7 @@ public class MyArray<T> : IMyCollection<T> where T : iDatabase
 
     public void Update(T task)
     {
-        T found = FindBy(task.ID, (t, id) => t.ID == id);
+        T found = FindBy(t => t.ID == task.ID ? 0 : -1);
         if (found != null)
         {
             int index = IndexOf(found);
@@ -83,14 +83,12 @@ public class MyArray<T> : IMyCollection<T> where T : iDatabase
         }
     }
 
-    public T FindBy<K>(K key, Func<T, K, bool> predicate)
+    public T FindBy(Func<T, int> predicate)
     {
         for (int i = 0; i < _count; i++)
         {
-            if (predicate(_items[i], key))
-            {
+            if (predicate(_items[i]) == 0)
                 return _items[i];
-            }
         }
         return default(T);
     }

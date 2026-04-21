@@ -7,10 +7,10 @@ public interface IMyCollection<T>
     // void Update(T item);
     void Remove(T item); //Done
 
-    // void Update(T task);
+    void Update(T task);
 
-    T FindBy<K>(Func<T,K,bool> predicate);//Done
-    IMyCollection<T> Filter(Func<T,bool> predicate); //Done
+    T FindBy(Func<T, int> predicate); //Done
+    IMyCollection<T> Filter(Func<T, bool> predicate); //Done
     void Sort(Comparison<T> comparison); //Done
     void Clear();//Done
     R Reduce<R>(Func<R, T, R> accumulator, R initial); //Done
