@@ -5,6 +5,7 @@ public class MyBinarySearchTree<T> : IMyCollection<T> where T : iDatabase, IComp
     public TreeNode<T>? Root { get; set; }
     public int Count => throw new NotImplementedException();
 
+    // do not have to implement this property, as the tree is always sorted and we can easily find the position of an element in the tree.
     public bool Dirty { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     public void Add(T value) => Add(value, Root);
@@ -263,12 +264,12 @@ public class MyBinarySearchTree<T> : IMyCollection<T> where T : iDatabase, IComp
         return Search(node.Left, value);
     }
 
-    public void Sort(Comparison<T> comparison)
+    public void Sort(Comparison<T> comparison) //inorder travrsal
     {
         throw new NotImplementedException();
     }
 
-    public void Update(T task)
+    public void Update(T task) // remove the old, add the new 
     {
         throw new NotImplementedException();
     }
