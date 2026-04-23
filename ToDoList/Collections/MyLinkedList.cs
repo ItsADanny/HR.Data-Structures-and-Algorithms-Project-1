@@ -1,4 +1,4 @@
-public class MyLinkedList<T> : IMyCollection<T>
+public class MyLinkedList<T> : IMyCollection<T> where T : iDatabase
 {
     private SingleNode<T> _head;
     private int _count;
@@ -76,6 +76,24 @@ public class MyLinkedList<T> : IMyCollection<T>
         }
         current.Next = current.Next.Next;
         _count--;
+    }
+
+    public void Update(T task)
+    {
+        T found = FindBy(task.ID, (t, id) => t.ID == id);
+        if (found != null)
+        {
+            SingleNode<T> current = _head;
+            while (current != null)
+            {
+                if (current.Value.Equals(found))
+                {
+                    current.Value = task;
+                    return;
+                }
+                current = current.Next;
+            }
+        }
     }
 
     public T FindBy<K>(K key, Func<T, K, bool> predicate)
