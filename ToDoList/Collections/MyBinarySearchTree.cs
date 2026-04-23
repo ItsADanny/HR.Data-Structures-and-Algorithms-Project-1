@@ -6,9 +6,17 @@ public class MyBinarySearchTree<T> : IMyCollection<T> where T : iDatabase, IComp
     public int Count => throw new NotImplementedException();
 
     // do not have to implement this property, as the tree is always sorted and we can easily find the position of an element in the tree.
-    public bool Dirty { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public bool Dirty { get; set; } = false;
 
-    public void Add(T value) => Add(value, Root);
+    public void Add(T value)
+    {
+        if (Root == null)
+        {
+            Root = new TreeNode<T>(value);
+            return;
+        }
+        Add(value, Root);
+    }
     public void AddIterative(T value)
     {
         if (Root == null)
@@ -135,6 +143,7 @@ public class MyBinarySearchTree<T> : IMyCollection<T> where T : iDatabase, IComp
     public IMyIterator<T> GetIterator()
     {
         throw new NotImplementedException();
+        // return new MyBSTIterator<T>(this);
     }
 
     public R Reduce<R>(Func<R, T, R> accumulator, R initial)
@@ -250,7 +259,7 @@ public class MyBinarySearchTree<T> : IMyCollection<T> where T : iDatabase, IComp
         return parent.Left != null && parent.Left.Value.CompareTo(node.Value) == 0;
     }
 
-    private TreeNode<T> Search(TreeNode<T>? node, T value)
+    private TreeNode<T>? Search(TreeNode<T>? node, T value)
     {
         if (node == null) // node does not exist
             return null;
@@ -264,13 +273,15 @@ public class MyBinarySearchTree<T> : IMyCollection<T> where T : iDatabase, IComp
         return Search(node.Left, value);
     }
 
-    public void Sort(Comparison<T> comparison) //inorder travrsal
+    public void Sort(Comparison<T> comparison) //inorder traversal
     {
+        // Sort is already in-order traversal
         throw new NotImplementedException();
     }
 
     public void Update(T task) // remove the old, add the new 
     {
-        throw new NotImplementedException();
+        Remove(task);
+        Add(task);
     }
 }
