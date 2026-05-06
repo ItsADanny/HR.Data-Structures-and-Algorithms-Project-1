@@ -1,12 +1,15 @@
 using Spectre.Console;
+using System.ComponentModel.DataAnnotations.Schema;
 
 public class TaskItem : iDatabase, IComparable<TaskItem>
 {
     public int ID {get; set;}
     public string Title {get; set;}
     public string Description {get; set;}
+    [NotMapped]
     public TaskPriority Priority {get; set;}
     public int Priority_Int => Priority.ToInt();
+    [NotMapped]
     public TaskStatus Status {get; set;}
     public int Status_Int => Status.ToInt();
     public String Priority_String => Priority.ToString();
