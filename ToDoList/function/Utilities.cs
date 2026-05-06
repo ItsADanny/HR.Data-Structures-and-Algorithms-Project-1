@@ -10,7 +10,7 @@ public static class Utilities
     public static string DTToDisplaySTR(DateTime datetime) =>
         datetime.ToString("yyyy-MM-dd HH:mm:ss");
 
-    public static IMyCollection<T> ConvertToMyCollection<T>(T[] array, eIMycollectionType collectionType) where T : iDatabase
+    public static IMyCollection<T> ConvertToMyCollection<T>(T[] array, eIMycollectionType collectionType) where T : iDatabase, IComparable<T>
     {
 
         IMyCollection<T> collection;
@@ -26,7 +26,7 @@ public static class Utilities
                 collection = new MyHashmap<T>();
                 break;
             case eIMycollectionType.BinarySearchTree:
-                collection = new MyLinkedList<T>();
+                collection = new MyBinarySearchTree<T>();
                 break;
             default:
                 throw new ArgumentException("Invalid collection type");

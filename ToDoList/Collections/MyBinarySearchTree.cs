@@ -107,17 +107,19 @@ public class MyBinarySearchTree<T> : IMyCollection<T> where T : iDatabase, IComp
 
     }
 
-    public T FindBy<K>(K key, Func<T, K, bool> predicate)
+    public T FindBy(Func<T, int> predicate)
     {
         foreach (var item in this)
         {
-            if (predicate(item, key))
+            if (predicate(item) == 0)
             {
                 return item;
             }
         }
         return default(T);
     }
+
+    
 
     public IEnumerator<T> GetEnumerator()
     {
@@ -284,4 +286,6 @@ public class MyBinarySearchTree<T> : IMyCollection<T> where T : iDatabase, IComp
         Remove(task);
         Add(task);
     }
+
+
 }

@@ -80,7 +80,7 @@ public class MyLinkedList<T> : IMyCollection<T> where T : iDatabase
 
     public void Update(T task)
     {
-        T found = FindBy(task.ID, (t, id) => t.ID == id);
+        T found = FindBy(t => t.Equals(task) ? 0 : -1);
         if (found != null)
         {
             SingleNode<T> current = _head;
@@ -96,12 +96,12 @@ public class MyLinkedList<T> : IMyCollection<T> where T : iDatabase
         }
     }
 
-    public T FindBy<K>(K key, Func<T, K, bool> predicate)
+    public T FindBy(Func<T, int> predicate)
     {
         SingleNode<T> current = _head;
         while (current != null)
         {
-            if (predicate(current.Value, key))
+            if (predicate(current.Value) == 0)
                 return current.Value;
 
             current = current.Next;
