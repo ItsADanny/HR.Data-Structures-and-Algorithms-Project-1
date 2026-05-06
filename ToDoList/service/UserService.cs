@@ -4,7 +4,7 @@ public class UserService : IUserService
 
     public bool AddUser(User user)
     {
-        if (UserList.FindBy(user.Username, (u, username) => u.Username == username) == null)
+        if (UserList.FindBy(u => u.Username == user.Username) == null)
         {
             UserList.Add(user);
             return true;
