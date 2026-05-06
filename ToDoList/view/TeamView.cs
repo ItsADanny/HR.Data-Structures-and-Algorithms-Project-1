@@ -52,10 +52,10 @@ public static class TeamView
 
         if (selectedTeam == "Exit") return null;
 
-        foreach (Team team in teams)
+        IMyCollection<Team> filteredTeams = teams.Filter(t => t.TeamName == selectedTeam);
+        foreach (Team team in filteredTeams)
         {
-            if (team.TeamName == selectedTeam)
-                return team;
+            return team;
         }
         return null;
     }
@@ -100,7 +100,7 @@ public static class TeamView
 
         while (teamToDelete == null && !Cancel)
         {
-            IMyCollection<Team> teams = Program.TeamRepo.Read();
+            IMyCollection<Team> teams = Utilities.ConvertToMyCollection<Team>(Program.TeamRepo.Read(), Program.collectionType);
             teamToDelete = SelectTeam(teams);
 
             if (teamToDelete == null)

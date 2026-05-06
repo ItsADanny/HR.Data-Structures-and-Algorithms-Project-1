@@ -10,7 +10,7 @@
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "10.0.4",
           "Microsoft.EntityFrameworkCore.Sqlite": "10.0.4",
-          "Spectre.Console": "0.54.0"
+          "Spectre.Console": "0.55.2"
         },
         "runtime": {
           "ToDoList.dll": {}
@@ -198,11 +198,22 @@
           }
         }
       },
-      "Spectre.Console/0.54.0": {
+      "Spectre.Console/0.55.2": {
+        "dependencies": {
+          "Spectre.Console.Ansi": "0.55.2"
+        },
         "runtime": {
           "lib/net10.0/Spectre.Console.dll": {
             "assemblyVersion": "0.0.0.0",
-            "fileVersion": "0.54.0.0"
+            "fileVersion": "0.55.2.0"
+          }
+        }
+      },
+      "Spectre.Console.Ansi/0.55.2": {
+        "runtime": {
+          "lib/net10.0/Spectre.Console.Ansi.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "0.55.2.0"
           }
         }
       },
@@ -476,12 +487,19 @@
       "path": "microsoft.extensions.primitives/10.0.4",
       "hashPath": "microsoft.extensions.primitives.10.0.4.nupkg.sha512"
     },
-    "Spectre.Console/0.54.0": {
+    "Spectre.Console/0.55.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-StDXCFayfy0yB1xzUHT2tgEpV1/HFTiS4JgsAQS49EYTfMixSwwucaQs/bIOCwXjWwIQTMuxjUIxcB5XsJkFJA==",
-      "path": "spectre.console/0.54.0",
-      "hashPath": "spectre.console.0.54.0.nupkg.sha512"
+      "sha512": "sha512-yc0g12YJpmZHofGJLTQX02/uqfzJ6XHRx6pe9rANNjleQptXMHPxD9KI2/DWkXiJWddc+4oizEdGox15c89hhw==",
+      "path": "spectre.console/0.55.2",
+      "hashPath": "spectre.console.0.55.2.nupkg.sha512"
+    },
+    "Spectre.Console.Ansi/0.55.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-tN3KEJQQZwLW9HJnG5YTSAxfBwxsmg1wVuGvhGG2rM+pbl+NGaHU8pDcNofPlOXlgpkbpBMxI5t9o9qPfy3sHQ==",
+      "path": "spectre.console.ansi/0.55.2",
+      "hashPath": "spectre.console.ansi.0.55.2.nupkg.sha512"
     },
     "SQLitePCLRaw.bundle_e_sqlite3/2.1.11": {
       "type": "package",

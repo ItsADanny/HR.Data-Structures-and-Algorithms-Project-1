@@ -57,3 +57,4 @@
 /Users/dannydesnoo/Documents/GitHub/HR.Data-Structures-and-Algorithms-Project-1/ToDoList/bin/Debug/net10.0/runtimes/win-arm64/native/e_sqlite3.dll
 /Users/dannydesnoo/Documents/GitHub/HR.Data-Structures-and-Algorithms-Project-1/ToDoList/bin/Debug/net10.0/runtimes/win-x64/native/e_sqlite3.dll
 /Users/dannydesnoo/Documents/GitHub/HR.Data-Structures-and-Algorithms-Project-1/ToDoList/bin/Debug/net10.0/runtimes/win-x86/native/e_sqlite3.dll
+/Users/dannydesnoo/Documents/GitHub/HR.Data-Structures-and-Algorithms-Project-1/ToDoList/bin/Debug/net10.0/Spectre.Console.Ansi.dll

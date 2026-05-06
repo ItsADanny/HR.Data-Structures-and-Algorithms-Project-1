@@ -67,16 +67,18 @@ public class MenuView()
 
         SelectionPrompt<string> Prompt = new SelectionPrompt<string>()
             .Title($"Which implementation would you like to use?)")
-            .AddChoices("Hashmap", "Linked List", "Double Linked List");
+            .AddChoices("Linked List", "Array", "Hashmap", "Binary Search Tree");
 
         switch(AnsiConsole.Prompt(Prompt))
         {
-            case "Hashmap":
+            case "LinkedList":
                 return 0;
-            case "Linked List":
+            case "Array":
                 return 1;
-            case "Double Linked List":
+            case "Hashmap":
                 return 2;
+            case "BinarySearchTree":
+                return 3;
             default:
                 return 0;
         }
