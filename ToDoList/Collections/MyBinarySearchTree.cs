@@ -107,11 +107,11 @@ public class MyBinarySearchTree<T> : IMyCollection<T> where T : iDatabase, IComp
 
     }
 
-    public T FindBy(Func<T, int> predicate)
+    public T FindBy(Func<T, bool> predicate)
     {
         foreach (var item in this)
         {
-            if (predicate(item) == 0)
+            if (predicate(item))
             {
                 return item;
             }

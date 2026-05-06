@@ -15,7 +15,7 @@ public class TaskService : ITaskService
     
     public void UpdateTask(TaskItem task)
     {
-        TaskItem found = TasksList.FindBy(task.ID, (t, id) => t.ID == id);
+        TaskItem found = TasksList.FindBy(t => t.ID == task.ID);
         if (found != null)
         {
             int index = TasksList.IndexOf(found);
@@ -25,7 +25,7 @@ public class TaskService : ITaskService
 
     public void DeleteTask(int id)
     {
-        TaskItem found = TasksList.FindBy(id, (task, taskId) => task.ID == taskId);
+        TaskItem found = TasksList.FindBy(t => t.ID == id);
         if (found != null)
         {
             TasksList.Remove(found);

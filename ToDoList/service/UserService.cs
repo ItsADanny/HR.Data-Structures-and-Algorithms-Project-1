@@ -27,12 +27,12 @@ public class UserService : IUserService
 
     public User GetUserByID(int id)
     {
-        return UserList.FindBy(id, (u, userID) => u.ID == userID);
+        return UserList.FindBy(u => u.ID == id);
     }
 
     public User GetUserByUsername(string username)
     {
-        return UserList.FindBy(username, (u, usernameParam) => u.Username == usernameParam);
+        return UserList.FindBy(u => u.Username == username);
     }
 
     public IMyCollection<User> GetUsersByFirstname(string firstname)

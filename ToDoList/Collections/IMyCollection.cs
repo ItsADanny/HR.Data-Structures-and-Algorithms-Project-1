@@ -9,7 +9,7 @@ public interface IMyCollection<T>
 
     void Update(T task);
 
-    T FindBy(Func<T, int> predicate); //Done
+    T FindBy(Func<T, bool> predicate); //Done
     IMyCollection<T> Filter(Func<T, bool> predicate); //Done
     void Sort(Comparison<T> comparison); //Done
     void Clear();//Done
