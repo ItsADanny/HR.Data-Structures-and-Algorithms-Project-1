@@ -1,6 +1,6 @@
 using Spectre.Console;
 
-public class TaskItem : iDatabase
+public class TaskItem : iDatabase, IComparable<TaskItem>
 {
     public int ID {get; set;}
     public string Title {get; set;}
@@ -78,5 +78,10 @@ public class TaskItem : iDatabase
     public override int GetHashCode()
     {
         return ID.GetHashCode(); 
+    }
+
+    public int CompareTo(TaskItem? other)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -52,7 +52,12 @@ public static class TeamView
 
         if (selectedTeam == "Exit") return null;
 
-        return teams.Filter(t => t.TeamName == selectedTeam);
+        foreach (Team team in teams)
+        {
+            if (team.TeamName == selectedTeam)
+                return team;
+        }
+        return null;
     }
 
     private static void PrintTeams()

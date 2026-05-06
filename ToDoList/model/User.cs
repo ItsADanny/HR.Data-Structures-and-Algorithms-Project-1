@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-public class User : iDatabase
+public class User : iDatabase, IComparable<User>
 {
     [Key]
     public int ID { get; set; }
@@ -18,6 +18,11 @@ public class User : iDatabase
     public int TaskID { get; set; }
     public Team? Team { get; set; }
     public int? TeamID { get; set; }
+
+    public int CompareTo(User? other)
+    {
+        throw new NotImplementedException();
+    }
 
     public string ToSQLDelete()
     {
