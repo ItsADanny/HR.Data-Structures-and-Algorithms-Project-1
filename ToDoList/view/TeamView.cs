@@ -122,7 +122,7 @@ public static class TeamView
 
         while (teamToUpdate == null && !Cancel)
         {
-            IMyCollection<Team> teams = Program.TeamRepo.Read();
+            IMyCollection<Team> teams = Utilities.ConvertToMyCollection<Team>(Program.TeamRepo.Read(), Program.collectionType);
             teamToUpdate = SelectTeam(teams);
 
             if (teamToUpdate == null)
