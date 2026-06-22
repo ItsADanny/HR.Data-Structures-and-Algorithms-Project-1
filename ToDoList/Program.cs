@@ -1,22 +1,35 @@
 ﻿public class Program
 {
+    public static AppContext AppDB = new();
+    public static Repository<Role> RoleRepo = new(AppDB);
+    public static Repository<TaskItem> TaskItemRepo = new(AppDB);
+    public static Repository<Team> TeamRepo = new(AppDB);
+    public static Repository<User> UserRepo = new(AppDB);
+
+    public static User? appUser = null;
+
+    public static eIMycollectionType collectionType;
+
     public static void Main()
     {
-        User DEMO_USER = new User
+        int implementation = MenuView.SelectImplementation();
+        collectionType = (eIMycollectionType)implementation;
+
+        bool ExitProgram = false;
+        int attempts = 0;
+        
+        while (attempts < 3 && appUser == null)
         {
-            FirstName = "Danny",
-            LastName = "de Snoo"
-        };
+            appUser = MenuView.Login(attempts);
+            if (appUser == null) attempts++;
+        }
+        if (attempts == 3 && appUser == null) ExitProgram = true;
 
-        TaskItem[] DEMO_DATA = [
-            new TaskItem("Baking a cake", "Baking a very good cake at the Hogeschool Rotterdam kitchen", 0, null, null),
-            new TaskItem("Ruling the World", "What can i say but i have some solutions", 1, null, null),
-            new TaskItem("Driving a JAAAG", "Driving a awesome car to the end of the world", 2, null, null),
-            new TaskItem("Nailing a Copper Golem to a Cross", "Nailing a Copper Golem to a Cross to show it i mean business", 3, null, null)
-        ];
+        while (!ExitProgram)
+        {
+            ExitProgram = MenuView.Main();
+        }
 
-        TaskView.PrintTasks(DEMO_USER, DEMO_DATA);
-
-        MenuView.RunMenu();
+        MenuView.GoodByeMessage();
     }
 }

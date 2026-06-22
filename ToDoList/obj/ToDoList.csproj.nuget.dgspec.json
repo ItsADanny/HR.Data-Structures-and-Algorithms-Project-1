@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/dannydesnoo/Documents/GitHub/HR.Data-Structures-and-Algorithms-Project-1/ToDoList/ToDoList.csproj": {}
+    "C:\\Users\\Hengy\\Documents\\GitHub\\HR.Data-Structures-and-Algorithms-Project-1\\ToDoList\\ToDoList.csproj": {}
   },
   "projects": {
-    "/Users/dannydesnoo/Documents/GitHub/HR.Data-Structures-and-Algorithms-Project-1/ToDoList/ToDoList.csproj": {
+    "C:\\Users\\Hengy\\Documents\\GitHub\\HR.Data-Structures-and-Algorithms-Project-1\\ToDoList\\ToDoList.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/dannydesnoo/Documents/GitHub/HR.Data-Structures-and-Algorithms-Project-1/ToDoList/ToDoList.csproj",
+        "projectUniqueName": "C:\\Users\\Hengy\\Documents\\GitHub\\HR.Data-Structures-and-Algorithms-Project-1\\ToDoList\\ToDoList.csproj",
         "projectName": "ToDoList",
-        "projectPath": "/Users/dannydesnoo/Documents/GitHub/HR.Data-Structures-and-Algorithms-Project-1/ToDoList/ToDoList.csproj",
-        "packagesPath": "/Users/dannydesnoo/.nuget/packages/",
-        "outputPath": "/Users/dannydesnoo/Documents/GitHub/HR.Data-Structures-and-Algorithms-Project-1/ToDoList/obj/",
+        "projectPath": "C:\\Users\\Hengy\\Documents\\GitHub\\HR.Data-Structures-and-Algorithms-Project-1\\ToDoList\\ToDoList.csproj",
+        "packagesPath": "C:\\Users\\Hengy\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Hengy\\Documents\\GitHub\\HR.Data-Structures-and-Algorithms-Project-1\\ToDoList\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/dannydesnoo/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\Hengy\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
@@ -44,9 +44,23 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[10.0.7, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[10.0.7, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[10.0.7, )"
+            },
             "Spectre.Console": {
               "target": "Package",
-              "version": "[0.54.0, )"
+              "version": "[0.55.2, )"
             }
           },
           "imports": [
@@ -65,7 +79,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/10.0.100/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.107/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
